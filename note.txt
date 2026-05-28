@@ -21,4 +21,12 @@ failure: can track 250 points at trajectory1, but when approaching the last 50 p
     because agent don't want to end the episode??
     but at trajectory2, it is hard to arrive so far points, it only can arrive about 100 points
 
+    if model learning too more hard trajectory at the begining, it would fail to be trained
+
+    cannot make model learning too more bad action, so the episode would be ended if no point be arrived by drone for 2000 steps
+
+    td3 is too shaking, use ppo can get more good performance
+
+    
+
 0.068 0.1809
