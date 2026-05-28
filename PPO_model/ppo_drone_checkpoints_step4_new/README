@@ -1,0 +1,7 @@
+difference between another original step4:
+    * change points of trajectory2 from 300 to 800, because the distance of trajectory2's each point is more longer than trajectory1. 
+      trajectory2's distance is about 8/3 times than trajectory1's
+    
+    * give trajectory2 longer training steps from 10000 steps to 20000 steps
+
+    * change the batch_size for PPO from 64 to 128 (each learning would learn 1024/128 times(batches), and use these batches to train 10 times) 

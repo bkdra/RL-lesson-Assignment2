@@ -1,0 +1,24 @@
+step1:
+    action: -1~1. obs: curr_pose, curr_vel, targe, next, next_next. reward: 100*progress 50000steps -> OK
+
+step2:
+    target: (0 ± 1, 0 ± 1, 10.5 ± 1)
+    action: -1~1. 
+    obs: curr_pose, curr_vel, targe, next, next_next. 
+    reward: 100*progress 100000steps -> OK
+
+step3:
+    target: two trajectory for 15 points
+    action: -1~1. 
+    obs: curr_pose, curr_vel, targe, next, next_next. 
+    reward: 100*progress 100000steps
+
+    current problem: only can complete trajectory 1. if agent face trajectory 2, it even cannot arrive 1st point
+
+
+
+failure: can track 250 points at trajectory1, but when approaching the last 50 points, it would go around at target point but not touch it.
+    because agent don't want to end the episode??
+    but at trajectory2, it is hard to arrive so far points, it only can arrive about 100 points
+
+0.068 0.1809

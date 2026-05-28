@@ -1,0 +1,3 @@
+about 950000 steps can get most perfect performance for trajectory2
+use trajectory1_noFace.txt and trajectory2_noFace.txt to train
+after 850000 steps, change the propotion of trajectory1 and trajectory2 from 1:1 to 1:2
