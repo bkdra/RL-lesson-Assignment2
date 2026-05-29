@@ -168,6 +168,8 @@ class DroneGymEnv(gym.Env):
         self.next_target_point = None
         self.next_next_target_point = None
 
+        self.isSuccess = False
+
         self.total_steps = 0
 
 
@@ -189,6 +191,7 @@ class DroneGymEnv(gym.Env):
             self.randTraj = self.trajectory1
         else:
             self.randTraj = self.trajectory2
+        self.randTraj = self.trajectory1
         
         self.randTraj = self.randTraj[:15]
         
@@ -210,6 +213,8 @@ class DroneGymEnv(gym.Env):
         self.step_count = 0
         self.current_target_idx = 0
         self.last_action = np.zeros(3)
+
+        self.isSuccess = False
 
         obs = self._get_obs()  # 初始 observation (動作全為 0)
         self._collect_garbage()
@@ -261,13 +266,14 @@ class DroneGymEnv(gym.Env):
             terminated = True
             reward += 10.0  # 完成軌跡的獎勵
             print("Trajectory completed!")
+            self.isSuccess = True
         truncated = self.step_count >= self.max_steps
         if truncated:
             print("Max steps reached, truncating episode.")
         self.last_action = action.copy()
         if self.step_count % 10 == 0 or terminated or truncated:
             self.printstate(reward, action)
-        return obs, reward, terminated, truncated, {}
+        return obs, reward, terminated, truncated, {"Success": self.isSuccess}
 
     # ------------------------------------------------------------
     def _get_obs(self):

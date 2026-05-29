@@ -29,4 +29,11 @@ failure: can track 250 points at trajectory1, but when approaching the last 50 p
 
     
 
-0.068 0.1809
+step1: 100% (100/100)
+step2: 92%  (92/100)
+step3: 
+    trajectory1: 98% (49/50)
+    trajectory2: 100% (50/50)
+step4: 
+    trajectory1: 100% (10/10)
+    trajectory2: 100% (10/10)

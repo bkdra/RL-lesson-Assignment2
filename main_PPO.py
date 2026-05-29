@@ -1,4 +1,4 @@
-from step4_fullTrajectoryEnv import DroneGymEnv, DroneROSInterface
+from step3_shortTrajectoryEnv import DroneGymEnv, DroneROSInterface
 import csv
 import numpy as np
 import time
@@ -146,31 +146,60 @@ def train(env, resume_from=None, total_timesteps=50_000):
     print('🖼️ 每步平均 reward 圖已存至 ppo_training_curve_reward_per_step.png')
 
 
-def test(env, resume_from=None):
+def test(env, resume_from=None, test_times=10):
     """載入訓練好的模型並測試。"""
     print('🚀 載入模型測試...')
-    if resume_from is not None:
-        model = PPO.load(resume_from)
-    else:
-        model = PPO.load('ppo_drone')
-    obs, _ = env.reset()
-    total_reward = 0
-    for step in range(20000):
-        action, _ = model.predict(obs, deterministic=True)
-        obs, reward, terminated, truncated, _ = env.step(action)
-        total_reward += reward
-        if step % 10 == 0:
-            print(f'Step {step}: pos={obs[:3]}, reward={reward:.2f}')
-        if terminated or truncated:
-            print(f'Episode ended at step {step} ')
-            break
-    print(f'✅ 測試結束,總 reward = {total_reward:.2f}')
+    
+    success_count = 0
+    info = None
+    
+    # if resume_from is not None:
+    #     model = PPO.load(resume_from)
+    # else:
+    #     model = PPO.load('ppo_drone')
+    # # print(f'🔍 測試第 {i+1} 次...')
+    # obs, _ = env.reset()
+    # total_reward = 0
+    # for step in range(20000):
+    #     action, _ = model.predict(obs, deterministic=True)
+    #     obs, reward, terminated, truncated, info = env.step(action)
+    #     total_reward += reward
+    #     if step % 10 == 0:
+    #         print(f'Step {step}: pos={obs[:3]}, reward={reward:.2f}')
+    #     if terminated or truncated:
+    #         print(f'Episode ended at step {step} ')
+    #         break
+    for i in range(test_times):
+        if resume_from is not None:
+            model = PPO.load(resume_from)
+        else:
+            model = PPO.load('ppo_drone')
+        # print(f'🔍 測試第 {i+1} 次...')
+        obs, _ = env.reset()
+        total_reward = 0
+        for step in range(20000):
+            action, _ = model.predict(obs, deterministic=True)
+            obs, reward, terminated, truncated, info = env.step(action)
+            total_reward += reward
+            if step % 10 == 0:
+                print(f'Step {step}: pos={obs[:3]}, reward={reward:.2f}')
+            if terminated or truncated:
+                print(f'Episode ended at step {step} ')
+                break
+        
+        print(f'✅ 測試結束,總 reward = {total_reward:.2f}')
+        if info and info.get("Success"):
+            success_count += 1
+            print("complete")
+
+    print(f'✅ 測試完成,成功次數: {success_count}/{test_times}')
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--mode', choices=['train', 'test'], default='train')
     parser.add_argument('--resume-from', default=None, help='載入既有 PPO 模型並接續訓練，例如 ppo_drone 或 ppo_drone.zip')
     parser.add_argument('--timesteps', type=int, default=50_000, help='本次要額外訓練的 timesteps')
+    parser.add_argument('--test-times', type=int, default=10, help='測試的次數')
     args = parser.parse_args()
 
     rclpy.init()
@@ -181,7 +210,7 @@ def main():
         if args.mode == 'train':
             train(env, resume_from=args.resume_from, total_timesteps=args.timesteps)
         else:
-            test(env, resume_from=args.resume_from)
+            test(env, resume_from=args.resume_from, test_times=args.test_times)
     finally:
         ros_interface.send_velocity(0, 0, 0, 0, 0, 0)
         ros_interface.destroy_node()
