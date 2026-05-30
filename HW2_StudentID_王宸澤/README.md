@@ -15,31 +15,46 @@ pip install pyyaml
 pip install tensorboard
 
 # How to reproduce your training run:
+
 > cd HW2_StudentID_王宸澤
+
 > python3 main_step1.py --mode train --timesteps 70000
+
 > python3 main_step2.py --mode train --resume-from models/ppo_drone_step1.zip --timesteps 100000
+
 > python3 main_step3.py --mode train --resume-from models/ppo_drone_step2.zip --timesteps 150000
+
 > python3 main_step4.py --mode train --resume-from models/ppo_drone_step3.zip --timesteps 350000
+
 
 # How to load and test the trained model
 Before running, open the Gazebo, and then, open the teleop and press S to make sure the drone is not moving. 
 > cd HW2_StudentID_王宸澤
+
 (for stage1:)
 > python3 main_step1.py --mode test --resume-from models/ppo_drone_step1.zip
+
 (for stage2:)
 > python3 main_step2.py --mode test --resume-from models/ppo_drone_step2.zip
+
 (for stage3 and randomly choose one of two trajectory:)
 > python3 main_step3.py --mode test --resume-from models/ppo_drone_step3.zip
+
 (for stage3 and choose traj1 as trajectory for this test:)
 > python3 main_step3.py --mode test --resume-from models/ppo_drone_step3.zip --traj-num 1
+
 (for stage3 and choose traj2 as trajectory for this test:)
 > python3 main_step3.py --mode test --resume-from models/ppo_drone_step3.zip --traj-num 2
+
 (for stage4 and randomly choose one of two trajectory:)
 > python3 main_step4.py --mode test --resume-from models/ppo_drone_step4.zip
+
 (for stage4 and choose traj1 as trajectory for this test:)
 > python3 main_step4.py --mode test --resume-from models/ppo_drone_step4.zip --traj-num 1
+
 (for stage4 and choose traj2 as trajectory for this test:)
 > python3 main_step4.py --mode test --resume-from models/ppo_drone_step4.zip --traj-num 2
+
 
 # Other things you can know
 1. Trajectories what I have given are long. 
