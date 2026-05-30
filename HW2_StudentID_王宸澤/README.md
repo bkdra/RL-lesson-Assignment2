@@ -1,11 +1,17 @@
 # Execution Environment
-OS: Ubuntu 22.04.5 LTS
-Docker version: 29.5.0
-python version: 3.10.20
-GPU: RTX 5060 desktop
-GPU driver: nvidia-driver-595-open
-CPU: 13th Gen Intel(R) Core(TM) i5-13450HX
-ROS2 version: iron
+* OS: Ubuntu 22.04.5 LTS
+
+* Docker version: 29.5.0
+  
+* python version: 3.10.20
+  
+* GPU: RTX 5060 desktop
+  
+* GPU driver: nvidia-driver-595-open
+  
+* CPU: 13th Gen Intel(R) Core(TM) i5-13450HX
+  
+* ROS2 version: iron
 
 # Installation commands
 pip install gymnasium
