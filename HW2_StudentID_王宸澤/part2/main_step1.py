@@ -1,4 +1,4 @@
-from step4_fullTrajectoryEnv import DroneGymEnv, DroneROSInterface
+from step1_onePointEnv import DroneGymEnv, DroneROSInterface
 import csv
 import numpy as np
 import time
@@ -150,49 +150,28 @@ def test(env, resume_from=None, test_times=10):
     """載入訓練好的模型並測試。"""
     print('🚀 載入模型測試...')
     
-    success_count = 0
     info = None
     
-    # if resume_from is not None:
-    #     model = PPO.load(resume_from)
-    # else:
-    #     model = PPO.load('ppo_drone')
-    # # print(f'🔍 測試第 {i+1} 次...')
-    # obs, _ = env.reset()
-    # total_reward = 0
-    # for step in range(20000):
-    #     action, _ = model.predict(obs, deterministic=True)
-    #     obs, reward, terminated, truncated, info = env.step(action)
-    #     total_reward += reward
-    #     if step % 10 == 0:
-    #         print(f'Step {step}: pos={obs[:3]}, reward={reward:.2f}')
-    #     if terminated or truncated:
-    #         print(f'Episode ended at step {step} ')
-    #         break
-    for i in range(test_times):
-        if resume_from is not None:
-            model = PPO.load(resume_from)
-        else:
-            model = PPO.load('ppo_drone')
-        # print(f'🔍 測試第 {i+1} 次...')
-        obs, _ = env.reset()
-        total_reward = 0
-        for step in range(20000):
-            action, _ = model.predict(obs, deterministic=True)
-            obs, reward, terminated, truncated, info = env.step(action)
-            total_reward += reward
-            if step % 10 == 0:
-                print(f'Step {step}: pos={obs[:3]}, reward={reward:.2f}')
-            if terminated or truncated:
-                print(f'Episode ended at step {step} ')
-                break
+    if resume_from is not None:
+        model = PPO.load(resume_from)
+    else:
+        model = PPO.load('ppo_drone')
+    # print(f'🔍 測試第 {i+1} 次...')
+    obs, _ = env.reset()
+    total_reward = 0
+    for step in range(20000):
+        action, _ = model.predict(obs, deterministic=True)
+        obs, reward, terminated, truncated, info = env.step(action)
+        total_reward += reward
+        if step % 10 == 0:
+            print(f'Step {step}: pos={obs[:3]}, reward={reward:.2f}')
+        if terminated or truncated:
+            print(f'Episode ended at step {step} ')
+            break
         
-        print(f'✅ 測試結束,總 reward = {total_reward:.2f}')
-        if info and info.get("Success"):
-            success_count += 1
-            print("complete")
-
-    print(f'✅ 測試完成,成功次數: {success_count}/{test_times}')
+    print(f'✅ 測試結束,總 reward = {total_reward:.2f}')
+    if info and info.get("Success"):
+        print("Success")
 
 def main():
     parser = argparse.ArgumentParser()
